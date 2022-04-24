@@ -7,8 +7,6 @@
 int main(/*int argc, char* argv[]*/)
 {
     auto start = std::chrono::steady_clock::now();
-    struct stat results1;
-    struct stat results2;
    /* if (argc > 1) { //wczytanie plików jeśli są argumenty
         std::ifstream file1(argv[1], std::ios::binary);
         std::ifstream file2(argv[2], std::ios::binary);
@@ -18,25 +16,36 @@ int main(/*int argc, char* argv[]*/)
     int size1 = results.st_size;
     stat(argv[2], &results);
     int size2 = results.st_size;*/
+    struct stat results1;
+    std::fstream file1("C:\Users\TytuZ\source\repos\Task_IV\file1", std::ios::binary);//wczytanie pliku
+    if (stat("C:\Users\TytuZ\source\repos\Task_IV\file1", &results1) == 0) //rozmiar plików
+    {
+        std::cout << results1.st_size << std::endl;//test danych rozmiaru
+    }
+    else
+    {
+        std::cout << "file 1 error size" << std::endl;
+    }
+        int size1 = results1.st_size; //rozmiar do inta
+        char* buffer1 = new char(size1); //tablica na plik
+        file1.read(buffer1, size1); //odczyt danych z pliku
+    
+    file1.close();//zamkniecie pliku na zakonczenie
 
-    std::ifstream file1("file1", std::ios::in | std::ios::binary);//wczytanie pliku
-    stat("file1", &results1);//rozmiar plików
-    long size1 = results1.st_size; //rozmiar do inta
-    char* buffer1=new char(size1); //tablica na plik
-    file1.read(buffer1, size1); //odczyt danych z pliku
-    for (int i = 0; i < size1; i++) {//wyświetlenie danych z pliku
-        std::cout << buffer1[i] << std::endl;
-    };
-    file1.close();//zamkniecie plików na zakonczenie
-
-    std::ifstream file2("file2", std::ios::in | std::ios::binary);
-    stat("file2", &results2);
-    long size2 = results2.st_size;
-    char* buffer2=new char(size2);
-    file2.read(buffer2, size2);
-    for (int i = 0; i < size2; i++) {
-        std::cout << buffer2[i] << std::endl;
-    };
+    struct stat results2;
+    std::fstream file2("C:\Users\TytuZ\source\repos\Task_IV\file2", std::ios::binary);
+    if (stat("C:\Users\TytuZ\source\repos\Task_IV\file2", &results2) == 0)
+    {
+        std::cout << results2.st_size << std::endl;
+    }
+    else
+    {
+        std::cout << "file 2 error size" << std::endl;
+    }
+        int size2 = results2.st_size;
+        char* buffer2 = new char(size2);
+        file2.read(buffer2, size2);
+    
     file2.close();
 
     int errorcount=0;//obliczanie błędów
@@ -45,11 +54,11 @@ int main(/*int argc, char* argv[]*/)
             errorcount += 1;
         }
         }
-    int BER;
 
+    int BER;
     if (errorcount != 0) //obliczanie BER
     {
-        BER = errorcount / size1 * 100;
+        BER = (errorcount / size1) * 100;
     }
     else
     {
