@@ -4,33 +4,23 @@
 #include <cstdlib>
 #include <chrono>
 
-int main(/*int argc, char* argv[]*/)
+int main(int argc, char* argv[])
 {
-    auto start = std::chrono::steady_clock::now();
-   /* if (argc > 1) { //wczytanie plików jeśli są argumenty
-        std::ifstream file1(argv[1], std::ios::binary);
-        std::ifstream file2(argv[2], std::ios::binary);
-        }*/
+    auto start = std::chrono::steady_clock::now(); //początek liczenia czasu
 
-    /*stat(argv[1], &results);//rozmiar plików
-    int size1 = results.st_size;
-    stat(argv[2], &results);
-    int size2 = results.st_size;*/
-
- 
-    std::fstream file1("file1.bin", std::ios::binary | std::ios::in | std::ios::out);//wczytanie pliku
+    std::fstream file1(argv[1], std::ios::binary | std::ios::in);//wczytanie pliku
     file1.seekg(0, std::ios::end); //rozmiar pliku 2
     int size1 = file1.tellg();
     file1.seekg(0, std::ios::beg);
     std::cout << size1 << std::endl;
  
-        size1 = size1 * 8;
+        size1 = size1 * 8; //zmiana rozmiaru z bajtów na bity
         char* buffer1 = new char(size1); //tablica na plik
         file1.read(buffer1, size1); //odczyt danych z pliku
     
     file1.close();//zamkniecie pliku na zakonczenie
 
-    std::fstream file2("file2.bin", std::ios::binary | std::ios::in | std::ios::out);
+    std::fstream file2(argv[2], std::ios::binary | std::ios::in);
     file2.seekg(0, std::ios::end);
     long size2 = file2.tellg();
     file2.seekg(0, std::ios::beg);
