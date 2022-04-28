@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
     float BER=0;
     if (errorcount != 0) //obliczanie BER
     {
-        BER = ((float)errorcount / size) * 100;
+        BER = ((float)errorcount / (size*8)) * 100;
     }
     else
     {
