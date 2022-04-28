@@ -94,11 +94,29 @@ int main(int argc, char* argv[])
 
     auto end = std::chrono::steady_clock::now(); //koniec liczenia czasu
 
-    std::cout << "Wyniki porowniani:" << std::endl;
+    auto timecount = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
+
+    std::cout << "Wyniki porownan:" << std::endl;
     std::cout << "ilosc porownanych bitow = " << totcount << std::endl;
     std::cout << "ilosc roznych bitow = " << errorcount << std::endl;
     std::cout << "BER = " << BER << "%" << std::endl;
-    std::cout << "czas obliczen = " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() <<" s." << std::endl;
+    std::cout << "czas obliczen = " << timecount <<" s." << std::endl;
+
+    std::fstream log;
+    log.open("log.txt", std::ios::app | std::ios::out);
+
+    auto start2 = std::chrono::system_clock::now();
+    auto legacyStart = std::chrono::system_clock::to_time_t(start2);
+    char tmBuff[30];
+    ctime_s(tmBuff, sizeof(tmBuff), &legacyStart);
+
+    log << "Wyniki porownan:" << std::endl;
+    log << "ilosc porownanych bitow = " << totcount << std::endl;
+    log << "ilosc roznych bitow = " << errorcount << std::endl;
+    log << "BER = " << BER << "%" << std::endl;
+    log << "czas obliczen = " << timecount << " s." << std::endl;
+
+    log.close();
 
     tekst = "=== Zakończenie Programu ===";
     logsave(tekst);
